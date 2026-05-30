@@ -51,4 +51,7 @@ class Product(
 
     /** Lowest variant price, used for display in the products table. */
     fun lowestPrice(): BigDecimal? = variants.mapNotNull { it.price }.minOrNull()
+
+    /** True if any variant is available; used for the stock badge. */
+    fun inStock(): Boolean = variants.any { it.available }
 }
