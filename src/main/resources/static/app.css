@@ -53,6 +53,21 @@ body {
     gap: 0.75rem;
 }
 
+.nav-link {
+    text-decoration: none;
+    margin-left: auto;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.search-bar wa-input {
+    flex: 1;
+}
+
 .card {
     background: #fff;
     border: 1px solid var(--border);

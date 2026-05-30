@@ -12,6 +12,12 @@ class ProductService(
     @Transactional(readOnly = true)
     fun findAll(): List<Product> = productRepository.findAll(Sort.by(Sort.Direction.DESC, "id"))
 
+    /** Filter products by title (case-insensitive substring). Blank query returns all. */
+    @Transactional(readOnly = true)
+    fun search(query: String?): List<Product> =
+        if (query.isNullOrBlank()) findAll()
+        else productRepository.findByTitleContainingIgnoreCaseOrderByIdDesc(query.trim())
+
     @Transactional
     fun addProduct(form: NewProductForm): Product {
         val product = Product(

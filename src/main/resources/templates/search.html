@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Search Products</title>
+
+    <!-- Web Awesome (components + default theme) -->
+    <!-- Use the browser-ready dist-cdn build (deps baked in); dist/ ships bare npm
+         specifiers the browser can't resolve (@shoelace-style/localize error). -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.7.0/dist-cdn/styles/webawesome.css"/>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.7.0/dist-cdn/styles/themes/default.css"/>
+    <!-- No data-webawesome attr: it would keep only the URL .pathname and strip the
+         CDN origin, breaking cross-origin component autoload. The loader derives the
+         base path from its own (absolute) <script src> instead. -->
+    <script type="module"
+            src="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.7.0/dist-cdn/webawesome.loader.js"></script>
+
+    <!-- HTMX for partial page updates (no full reload) -->
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js"></script>
+
+    <link rel="stylesheet" th:href="@{/app.css}"/>
+</head>
+<body class="wa-theme-default">
+
+<header class="app-header">
+    <div class="app-header__inner">
+        <wa-icon name="magnifying-glass" variant="solid"></wa-icon>
+        <div>
+            <h1>Search Products</h1>
+            <p>Search by title — results update as you type</p>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="toolbar">
+        <a th:href="@{/}" class="nav-link">
+            <wa-button variant="neutral" appearance="outlined">
+                <wa-icon slot="start" name="arrow-left"></wa-icon>
+                Back to products
+            </wa-button>
+        </a>
+    </section>
+
+    <!-- Live search box: HTMX fires a debounced request on each keystroke. -->
+    <section class="search-bar">
+        <wa-input id="search-box"
+                  name="q"
+                  placeholder="Search by title…"
+                  size="large"
+                  clearable
+                  autofocus
+                  hx-get="/products/search"
+                  hx-trigger="input changed delay:300ms, search"
+                  hx-target="#search-results"
+                  hx-swap="innerHTML"
+                  hx-indicator="#search-spinner">
+            <wa-icon slot="start" name="magnifying-glass"></wa-icon>
+        </wa-input>
+        <wa-spinner id="search-spinner" class="htmx-indicator"></wa-spinner>
+    </section>
+
+    <!-- Results table fragment, populated on load and on every search. -->
+    <section id="search-results" class="card"
+             hx-get="/products/search"
+             hx-trigger="load"
+             hx-swap="innerHTML">
+    </section>
+
+</main>
+
+</body>
+</html>

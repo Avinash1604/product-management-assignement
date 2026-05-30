@@ -5,6 +5,7 @@ import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestParam
 
 @Controller
 class ProductController(
@@ -19,6 +20,17 @@ class ProductController(
     @GetMapping("/products")
     fun listProducts(model: Model): String {
         model.addAttribute("products", productService.findAll())
+        return "fragments/products :: table"
+    }
+
+    /** The search page: a search box that live-filters the products table by title. */
+    @GetMapping("/search")
+    fun search(): String = "search"
+
+    /** HTMX endpoint: returns the table fragment filtered by the title query. */
+    @GetMapping("/products/search")
+    fun searchProducts(@RequestParam(name = "q", required = false) q: String?, model: Model): String {
+        model.addAttribute("products", productService.search(q))
         return "fragments/products :: table"
     }
 
