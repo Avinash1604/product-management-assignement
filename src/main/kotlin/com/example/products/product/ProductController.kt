@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 
@@ -40,5 +41,19 @@ class ProductController(
         productService.addProduct(form)
         model.addAttribute("products", productService.findAll())
         return "fragments/products :: table"
+    }
+
+    /** The edit page: a form pre-filled with the product's current details. */
+    @GetMapping("/products/{id}/edit")
+    fun editProduct(@PathVariable id: Long, model: Model): String {
+        model.addAttribute("product", productService.findById(id))
+        return "edit"
+    }
+
+    /** Saves the edited product details, then returns to the products page. */
+    @PostMapping("/products/{id}")
+    fun updateProduct(@PathVariable id: Long, @ModelAttribute form: EditProductForm): String {
+        productService.updateProduct(id, form)
+        return "redirect:/"
     }
 }

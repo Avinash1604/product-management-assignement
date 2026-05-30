@@ -18,6 +18,23 @@ class ProductService(
         if (query.isNullOrBlank()) findAll()
         else productRepository.findByTitleContainingIgnoreCaseOrderByIdDesc(query.trim())
 
+    @Transactional(readOnly = true)
+    fun findById(id: Long): Product =
+        productRepository.findById(id).orElseThrow {
+            NoSuchElementException("Product $id not found")
+        }
+
+    /** Update the product-level details (title, vendor, type, image). */
+    @Transactional
+    fun updateProduct(id: Long, form: EditProductForm): Product {
+        val product = findById(id)
+        product.title = form.title.trim()
+        product.vendor = form.vendor?.trim().orNullIfBlank()
+        product.productType = form.productType?.trim().orNullIfBlank()
+        product.imageUrl = form.imageUrl?.trim().orNullIfBlank()
+        return productRepository.save(product)
+    }
+
     @Transactional
     fun addProduct(form: NewProductForm): Product {
         val product = Product(

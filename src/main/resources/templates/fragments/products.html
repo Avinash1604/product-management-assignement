@@ -18,6 +18,7 @@
             <th>Type</th>
             <th>Variants</th>
             <th>From</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -36,6 +37,14 @@
                 th:text="${product.lowestPrice() != null}
                          ? 'kr ' + ${#numbers.formatDecimal(product.lowestPrice(), 1, 2)}
                          : '—'">kr 0.00
+            </td>
+            <td class="action-cell">
+                <a th:href="@{/products/{id}/edit(id=${product.id})}" class="nav-link">
+                    <wa-button variant="neutral" appearance="outlined" size="small">
+                        <wa-icon slot="start" name="pen-to-square"></wa-icon>
+                        Edit
+                    </wa-button>
+                </a>
             </td>
         </tr>
         </tbody>

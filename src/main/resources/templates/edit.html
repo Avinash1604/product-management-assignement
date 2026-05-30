@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Edit Product</title>
+
+    <!-- Web Awesome (components + default theme) -->
+    <!-- Use the browser-ready dist-cdn build (deps baked in); dist/ ships bare npm
+         specifiers the browser can't resolve (@shoelace-style/localize error). -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.7.0/dist-cdn/styles/webawesome.css"/>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.7.0/dist-cdn/styles/themes/default.css"/>
+    <!-- No data-webawesome attr: it would keep only the URL .pathname and strip the
+         CDN origin, breaking cross-origin component autoload. The loader derives the
+         base path from its own (absolute) <script src> instead. -->
+    <script type="module"
+            src="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.7.0/dist-cdn/webawesome.loader.js"></script>
+
+    <link rel="stylesheet" th:href="@{/app.css}"/>
+</head>
+<body class="wa-theme-default">
+
+<header class="app-header">
+    <div class="app-header__inner">
+        <wa-icon name="pen-to-square" variant="solid"></wa-icon>
+        <div>
+            <h1>Edit Product</h1>
+            <p th:text="${product.title}">Product title</p>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="toolbar">
+        <a th:href="@{/}" class="nav-link">
+            <wa-button variant="neutral" appearance="outlined">
+                <wa-icon slot="start" name="arrow-left"></wa-icon>
+                Back to products
+            </wa-button>
+        </a>
+    </section>
+
+    <wa-card class="add-card">
+        <h2 slot="header">Update details</h2>
+        <!-- Standard form POST; controller saves then redirects back to "/". -->
+        <form th:action="@{/products/{id}(id=${product.id})}" method="post">
+            <div class="form-grid">
+                <wa-input name="title" label="Title" required
+                          th:value="${product.title}"></wa-input>
+                <wa-input name="vendor" label="Vendor"
+                          th:value="${product.vendor}"></wa-input>
+                <wa-input name="productType" label="Product type"
+                          th:value="${product.productType}"></wa-input>
+                <wa-input name="imageUrl" label="Image URL" placeholder="https://…"
+                          th:value="${product.imageUrl}"></wa-input>
+            </div>
+            <wa-button type="submit" variant="brand">
+                <wa-icon slot="start" name="floppy-disk"></wa-icon>
+                Save changes
+            </wa-button>
+        </form>
+    </wa-card>
+
+</main>
+
+</body>
+</html>

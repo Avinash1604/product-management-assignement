@@ -58,6 +58,11 @@ body {
     margin-left: auto;
 }
 
+.action-cell {
+    text-align: right;
+    white-space: nowrap;
+}
+
 .search-bar {
     display: flex;
     align-items: center;
