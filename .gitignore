@@ -25,3 +25,17 @@ replay_pid*
 
 # Kotlin Gradle plugin data, see https://kotlinlang.org/docs/whatsnew20.html#new-directory-for-kotlin-data-in-gradle-projects
 .kotlin/
+
+# Gradle
+.gradle/
+build/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# macOS
+.DS_Store
+
+# The "*.jar" rule above would exclude the Gradle wrapper jar — keep it tracked
+!gradle/wrapper/gradle-wrapper.jar

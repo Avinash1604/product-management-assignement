@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Product Management</title>
+
+    <!-- Web Awesome (components + default theme) -->
+    <!-- Use the browser-ready dist-cdn build (deps baked in); dist/ ships bare npm
+         specifiers the browser can't resolve (@shoelace-style/localize error). -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.7.0/dist-cdn/styles/webawesome.css"/>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.7.0/dist-cdn/styles/themes/default.css"/>
+    <!-- No data-webawesome attr: it would keep only the URL .pathname and strip the
+         CDN origin, breaking cross-origin component autoload. The loader derives the
+         base path from its own (absolute) <script src> instead. -->
+    <script type="module"
+            src="https://cdn.jsdelivr.net/npm/@awesome.me/webawesome@3.7.0/dist-cdn/webawesome.loader.js"></script>
+
+    <!-- HTMX for partial page updates (no full reload) -->
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js"></script>
+
+    <link rel="stylesheet" th:href="@{/app.css}"/>
+</head>
+<body class="wa-theme-default">
+
+<header class="app-header">
+    <div class="app-header__inner">
+        <wa-icon name="bag-shopping" variant="solid"></wa-icon>
+        <div>
+            <h1>Product Management</h1>
+            <p>Spring Boot · HTMX · Web Awesome · Postgres</p>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="toolbar">
+        <wa-button id="load-btn"
+                   variant="brand"
+                   size="large"
+                   hx-get="/products"
+                   hx-target="#products-container"
+                   hx-swap="innerHTML"
+                   hx-indicator="#load-spinner"
+                   hx-on::after-request="document.getElementById('add-section').hidden = false">
+            <wa-icon slot="start" name="arrows-rotate"></wa-icon>
+            Load products
+        </wa-button>
+        <wa-spinner id="load-spinner" class="htmx-indicator"></wa-spinner>
+    </section>
+
+    <!-- The products table fragment is swapped in here by HTMX -->
+    <section id="products-container" class="card">
+        <wa-callout variant="neutral">
+            <wa-icon slot="icon" name="circle-info"></wa-icon>
+            Click <strong>Load products</strong> to fetch products from the database.
+        </wa-callout>
+    </section>
+
+    <!-- Add-product form: hidden until the table has been loaded at least once -->
+    <section id="add-section" hidden>
+        <wa-card class="add-card">
+            <h2 slot="header">Add a product</h2>
+            <form id="add-form"
+                  hx-post="/products"
+                  hx-target="#products-container"
+                  hx-swap="innerHTML"
+                  hx-on::after-request="if(event.detail.successful) this.reset()">
+                <div class="form-grid">
+                    <wa-input name="title" label="Title" placeholder="e.g. Running Shorts" required></wa-input>
+                    <wa-input name="vendor" label="Vendor" placeholder="e.g. FAMME"></wa-input>
+                    <wa-input name="productType" label="Product type" placeholder="e.g. Shorts"></wa-input>
+                    <wa-input name="variantTitle" label="Variant" placeholder="e.g. Black / M"></wa-input>
+                    <wa-input name="sku" label="SKU" placeholder="e.g. SHRT-BK-M"></wa-input>
+                    <wa-input name="price" type="number" min="0" step="0.01" label="Price (kr)"
+                              placeholder="0.00"></wa-input>
+                    <wa-select name="available" label="Availability" value="true">
+                        <wa-option value="true">In stock</wa-option>
+                        <wa-option value="false">Out of stock</wa-option>
+                    </wa-select>
+                </div>
+                <wa-button type="submit" variant="brand">
+                    <wa-icon slot="start" name="plus"></wa-icon>
+                    Add product
+                </wa-button>
+            </form>
+        </wa-card>
+    </section>
+
+</main>
+
+</body>
+</html>

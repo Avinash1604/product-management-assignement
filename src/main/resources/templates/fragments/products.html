@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Reusable products table fragment, returned for both GET and POST /products -->
+<div th:fragment="table">
+
+    <div class="table-meta">
+        <wa-badge variant="brand" pill th:text="${products.size()} + ' products'">0 products</wa-badge>
+    </div>
+
+    <table class="products-table" th:if="${!products.isEmpty()}">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Title</th>
+            <th>Vendor</th>
+            <th>Type</th>
+            <th>Variants</th>
+            <th>From</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td class="thumb">
+                <img th:if="${product.imageUrl != null}" th:src="${product.imageUrl}" alt="" loading="lazy"/>
+                <span th:unless="${product.imageUrl != null}" class="thumb--empty">—</span>
+            </td>
+            <td class="title-cell" th:text="${product.title}">Title</td>
+            <td th:text="${product.vendor} ?: '—'">Vendor</td>
+            <td th:text="${product.productType} ?: '—'">Type</td>
+            <td>
+                <wa-badge variant="neutral" pill th:text="${product.variants.size()}">0</wa-badge>
+            </td>
+            <td class="price-cell"
+                th:text="${product.lowestPrice() != null}
+                         ? 'kr ' + ${#numbers.formatDecimal(product.lowestPrice(), 1, 2)}
+                         : '—'">kr 0.00
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <wa-callout variant="neutral" th:if="${products.isEmpty()}">
+        <wa-icon slot="icon" name="box-open"></wa-icon>
+        No products yet. Add one using the form below.
+    </wa-callout>
+
+</div>
+
+</body>
+</html>
