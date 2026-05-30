@@ -50,6 +50,12 @@
             Load products
         </wa-button>
         <wa-spinner id="load-spinner" class="htmx-indicator"></wa-spinner>
+        <a th:href="@{/search}" class="nav-link">
+            <wa-button variant="neutral" appearance="outlined" size="large">
+                <wa-icon slot="start" name="magnifying-glass"></wa-icon>
+                Search products
+            </wa-button>
+        </a>
     </section>
 
     <!-- The products table fragment is swapped in here by HTMX -->
