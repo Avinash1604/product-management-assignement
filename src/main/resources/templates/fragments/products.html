@@ -39,12 +39,35 @@
                          : '—'">kr 0.00
             </td>
             <td class="action-cell">
-                <a th:href="@{/products/{id}/edit(id=${product.id})}" class="nav-link">
+                <a th:href="@{/products/{id}/edit(id=${product.id})}" class="action-link">
                     <wa-button variant="neutral" appearance="outlined" size="small">
                         <wa-icon slot="start" name="pen-to-square"></wa-icon>
                         Edit
                     </wa-button>
                 </a>
+
+                <!-- Native <dialog> confirms before the product is deleted. -->
+                <wa-button variant="danger" appearance="outlined" size="small"
+                           onclick="this.nextElementSibling.showModal()">
+                    <wa-icon slot="start" name="trash"></wa-icon>
+                    Delete
+                </wa-button>
+                <dialog class="delete-dialog">
+                    <h3>Delete product?</h3>
+                    <p>This permanently removes
+                        “<strong th:text="${product.title}">Title</strong>” from the database.</p>
+                    <div class="dialog-actions">
+                        <wa-button appearance="outlined"
+                                   onclick="this.closest('dialog').close()">Cancel</wa-button>
+                        <wa-button variant="danger"
+                                   th:attr="hx-delete=@{/products/{id}(id=${product.id})}"
+                                   hx-target="#products-container"
+                                   hx-swap="innerHTML">
+                            <wa-icon slot="start" name="trash"></wa-icon>
+                            Delete
+                        </wa-button>
+                    </div>
+                </dialog>
             </td>
         </tr>
         </tbody>

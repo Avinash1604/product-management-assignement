@@ -59,8 +59,44 @@ body {
 }
 
 .action-cell {
-    text-align: right;
     white-space: nowrap;
+    text-align: right;
+}
+
+.action-cell .action-link,
+.action-cell wa-button {
+    vertical-align: middle;
+}
+
+.action-link {
+    text-decoration: none;
+}
+
+.delete-dialog {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    max-width: 26rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.delete-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.delete-dialog h3 {
+    margin: 0 0 0.5rem;
+}
+
+.delete-dialog p {
+    margin: 0 0 1.25rem;
+    color: #4b5563;
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
 }
 
 .search-bar {
