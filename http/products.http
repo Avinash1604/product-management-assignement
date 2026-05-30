@@ -1,0 +1,24 @@
+### Product Management — IntelliJ HTTP Client requests
+### Run these from IntelliJ (the gutter ▶ icon). Requires the app running on :8080.
+
+@host = http://localhost:8080
+
+### 1. Load the products table fragment (what the "Load products" button calls)
+GET {{host}}/products
+Accept: text/html
+
+### 2. Add a new product (form-encoded, same payload the HTMX form sends)
+POST {{host}}/products
+Content-Type: application/x-www-form-urlencoded
+
+title=HTTP Client Test Shorts&vendor=FAMME&productType=Shorts&variantTitle=Black / M&sku=TEST-BK-M&price=499.00&available=true
+
+### 3. Add a product with no variant details (only the product row is created)
+POST {{host}}/products
+Content-Type: application/x-www-form-urlencoded
+
+title=Minimal Product&vendor=ACME
+
+### 4. The upstream source the scheduled job ingests (limited to 50 in the app)
+GET https://famme.no/products.json?limit=250
+Accept: application/json
