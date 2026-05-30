@@ -5,6 +5,8 @@ add new ones, with the table updating **without a full page reload** via [HTMX](
 UI components use [Web Awesome](https://webawesome.com). The database is seeded at startup by a
 scheduled job that ingests products from `https://famme.no/products.json`.
 
+![Product management UI](product.png)
+
 ## Tech stack (latest stable)
 
 | Tool | Version |
