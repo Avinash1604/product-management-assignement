@@ -18,6 +18,7 @@
             <th>Type</th>
             <th>Variants</th>
             <th>From</th>
+            <th>Stock</th>
             <th></th>
         </tr>
         </thead>
@@ -37,6 +38,10 @@
                 th:text="${product.lowestPrice() != null}
                          ? 'kr ' + ${#numbers.formatDecimal(product.lowestPrice(), 1, 2)}
                          : '—'">kr 0.00
+            </td>
+            <td>
+                <wa-badge th:if="${product.inStock()}" variant="success" pill>In stock</wa-badge>
+                <wa-badge th:unless="${product.inStock()}" variant="danger" pill>Sold out</wa-badge>
             </td>
             <td class="action-cell">
                 <a th:href="@{/products/{id}/edit(id=${product.id})}" class="action-link">
@@ -61,7 +66,7 @@
                                    onclick="this.closest('dialog').close()">Cancel</wa-button>
                         <wa-button variant="danger"
                                    th:attr="hx-delete=@{/products/{id}(id=${product.id})}"
-                                   hx-target="#products-container"
+                                   hx-target="closest section"
                                    hx-swap="innerHTML">
                             <wa-icon slot="start" name="trash"></wa-icon>
                             Delete
