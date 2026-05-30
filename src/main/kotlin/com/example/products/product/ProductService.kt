@@ -24,6 +24,10 @@ class ProductService(
             NoSuchElementException("Product $id not found")
         }
 
+    /** Delete a product (variants cascade via orphanRemoval / ON DELETE CASCADE). */
+    @Transactional
+    fun deleteProduct(id: Long) = productRepository.deleteById(id)
+
     /** Update the product-level details (title, vendor, type, image). */
     @Transactional
     fun updateProduct(id: Long, form: EditProductForm): Product {
